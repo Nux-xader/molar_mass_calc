@@ -224,6 +224,11 @@ def compute_moles(molar_mass, mass_in_gram):
     return mass_in_gram/molar_mass
 
 
+def parse_result(data):
+    data = str(data)
+    if len(data.split(".")[1]) > 5: return f'{data.split(".")[0]}.{data.split(".")[1][:5]}'
+    return data
+
 formula = str(input("Enter the molecular formula of the sample: "))
 while True:
     try:
@@ -234,4 +239,4 @@ while True:
 symbol_quantity_list = parse_formula(formula, table)
 molar_mass = compute_molar_mass(symbol_quantity_list, table)
 moles = compute_moles(molar_mass, mass_in_gram)
-print(f"{molar_mass} grams/mole\n{moles} moles")
+print(f"{parse_result(molar_mass)} grams/mole\n{parse_result(moles)} moles")
