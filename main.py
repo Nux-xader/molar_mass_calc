@@ -203,6 +203,7 @@ def parse_formula(formula, periodic_table_dict):
     return list(elem_dict.items())
 
 
+
 # These are the indexes of the
 # elements in the periodic table.
 NAME_INDEX = 0
@@ -210,19 +211,27 @@ ATOMIC_MASS_INDEX = 1
 
 
 def compute_molar_mass(symbol_quantity_list, periodic_table_dict):
-    """Compute and return the total molar mass of all the
-    elements listed in symbol_quantity_list. Each element in
-    symbol_quantity_list is a list in the form: ["symbol", quantity].
+    quantity = []
+    for data in symbol_quantity_list:
+        if len(data) == 1:
+            quantity.append((data[0], 1))
+        else:
+            quantity.append((data))
+            
+    return sum([periodic_table_dict[data[0]][1]*data[1] for data in quantity])
 
-    As an example, if symbol_quantity_list is [["H", 2], ["O", 1]],
-    this function will calculate and return
-    atomic_mass("H") * 2 + atomic_mass("O") * 1
-    1.00794 * 2 + 15.9994 * 1
-    18.01528
-    """
-    # For each element in the symbol_quantity_list:
-    #   Split the element into symbol and quantity.
-    #   Get the atomic mass for the symbol.
-    #   Multiply the atomic mass by the quantity.
-    #   Add the product into the total mass.
-    pass
+def compute_moles(molar_mass, mass_in_gram):
+    return mass_in_gram/molar_mass
+
+
+formula = str(input("Enter the molecular formula of the sample: "))
+while True:
+    try:
+        mass_in_gram = float(input("Enter the mass in grams of the sample: "))
+        break
+    except:
+        print("Pleae input number!")
+symbol_quantity_list = parse_formula(formula, table)
+molar_mass = compute_molar_mass(symbol_quantity_list, table)
+moles = compute_moles(molar_mass, mass_in_gram)
+print(f"{molar_mass} grams/mole\n{moles} moles")
